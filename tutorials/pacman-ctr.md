@@ -18,7 +18,7 @@ git checkout -b [new-branch]
 We'll roughly follow the [README.md](https://github.com/sallyom/mongo-pacman/tree/main/frontend)
 for the program's frontend.
 
-## Build & Run PacMan
+## Build PacMan
 
 Use the commands and submit the form listed below.
 If you forget to add the `--it` flags to the run command, it will be tricky to stop the container.
@@ -29,6 +29,23 @@ cd frontend
 podman build -t docker.io/yourname/pacman:latest -f docker/Dockerfile .
 cd ../
 ```
+
+### Note: For people on windows, create another Containerfile with the following lines and build it
+```bash
+vi windows-containerfile
+```
+Add these lines to the windows-containerfile
+```
+FROM docker.io/yourname/pacman:latest
+RUN dnf -y install dos2unix
+RUN dos2unix /usr/local/bin/pacman.sh && chmod +x /usr/local/bin/pacman.sh
+```
+Then run the following command to build your image
+```
+podman build -t docker.io/yourname/pacman:latest -f windows-containerfile .
+```
+
+## Run the built image
 
 Now run the newly built image. `--rm` ensures the container will be cleaned up after you stop the container.
 Add the `-d` to run this container in the background.
